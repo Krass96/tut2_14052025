@@ -17,11 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
     symbol: '€',
     decimalDigits: 2,
   );
-  // TODO: 1. Instanz von Mockdatabase erstellen
+  // Instanz von Mockdatabase erstellen
   final DatabaseRepository db = MockDatabase();
+
   @override
   Widget build(BuildContext context) {
     // TODO: 2. Alle Transaktionen vom MockDB holen und in einer Variable speichern
+    final List<Transaction> transactions = db.getAllTransactions();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,33 +39,38 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 currencyFormat.format(
                   // TODO: 3. aktuelles Guthaben anzeigen lassen aus MockDB
-                  12.4566,
+                  db.getCurrentBalance(),
                 ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               const Text(
                 "Transaktionen",
-
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: db.getAllTransactions().length,
+                  itemCount: transactions.length,
                   itemBuilder: (context, index) {
-                    // TODO: 4. Hilfsvariable verwenden, die jeweils einen Wer der MockDB repräsentiert, Tipp: Schritt 2 ansehen & transactions[index]
+                    // TODO: 4. Hilfsvariable verwenden, die jeweils einen Wert der MockDB repräsentiert, Tipp: Schritt 2 ansehen & transactions[index]
+                    final Transaction transaction = transactions[index];
                     return ListTile(
                       // TODO: 5. Beschreibung der Transaktion einbauen:
-                      title: Text("Beschreibung der Transaktion"),
+                      title: Text(transaction.description),
                       trailing: Text(
                         currencyFormat.format(
                           // TODO: 5. Transaktions-Summe anzeigen lassen
-                          15.00,
+                          transaction.amount,
                         ),
                         style: TextStyle(
                           color:
                               // TODO: 6. Bonus! Wenn die Summe negativ ist, soll sie Rot sein, wenn sie positiv ist soll sie grün sein
-                              Colors.red,
+                              transaction.amount < 0
+                                  ? Colors.red
+                                  : Colors.green,
                         ),
                       ),
                     );

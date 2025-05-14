@@ -4,5 +4,7 @@ abstract class DatabaseRepository {
   List<Transaction> getAllTransactions(); // read
   void addTransaction(Transaction transactions); // create
   void deleteTransaction(Transaction transactions); // delete
-  double getTotalAmount(); // read
+  double getTotalAmount();
+
+  getCurrentBalance() {} // read
 }
